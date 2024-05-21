@@ -609,11 +609,9 @@ def taskexecution():
         elif "minimize" in query or "minimise" in query:
             speak("ok sir")
             pyautogui.hotkey('win', 'd')
-
         elif "maximize" in query or "maximise" in query:
             speak("ok sir")
             pyautogui.hotkey('win', 'd')
-
         else:
             generate(query)
             response = generate(query, system_prompt="Talk Like JARVIS")
