@@ -550,6 +550,7 @@ def taskexecution():
             os.system("taskkill /f /IM WhatsApp.exe")
 
         #commands
+        
         elif "read it" in query or "read this" in query or "read" in query.lower():
             speak("Sure boss, give me a second")
             print("Reading...")
