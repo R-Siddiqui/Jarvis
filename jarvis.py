@@ -32,15 +32,14 @@ engine.setProperty('voices', voices[0].id)
 
 
 #text to voice
+
 def speak(audio):
     engine.say(audio)
     print(audio)
     engine.runAndWait()
 
-
-
-
 #voice to text
+
 def takecommand():
     r = sr.Recognizer()
     with sr.Microphone() as source:
@@ -60,7 +59,8 @@ def takecommand():
         query = query.lower()
         return query
 
-
+# A.I generater
+ 
 def generate(query: str, system_prompt: str = "keep your response short and concise",
              model: str = "openchat/openchat-7b", max_tokens: int = 8096,  # For Simple Models
              temperature: float = 0.85, frequency_penalty: float = 0.34, presence_penalty: float = 0.06,
@@ -136,6 +136,7 @@ Flagship Opensource:
 
 
 #to wish
+
 def wish():
     playsound("C:\\Users\\rihan\\OneDrive\\Documents\\My Projects\\Jarvis\\jarvis_plug_in.mp3") #88888
     sleep(1)
@@ -148,6 +149,7 @@ def wish():
         speak("good evening sir")
 
 
+#taskcommand
 
 def taskexecution():
     speak("yes sir what should i help you")
