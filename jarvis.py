@@ -11,11 +11,14 @@ import pyjokes
 import smtplib
 from time import sleep
 import pyautogui
+pyautogui.FAILSAFE = False
 from time import sleep
 import win32clipboard
 import requests
 import json
 import os
+import glob
+from googletrans import Translator
 from playsound import playsound
 from dotenv import load_dotenv
 
@@ -39,7 +42,6 @@ def speak(audio):
     engine.runAndWait()
 
 #voice to text
-
 def takecommand():
     r = sr.Recognizer()
     with sr.Microphone() as source:
@@ -58,7 +60,7 @@ def takecommand():
             return "None"
         query = query.lower()
         return query
-
+    
 # A.I generater
  
 def generate(query: str, system_prompt: str = "keep your response short and concise",
@@ -171,11 +173,11 @@ def taskexecution():
         elif "play song on spotify" in query:
             query = query.replace("play song on spotify", "")
             webbrowser.open(f"https://open.spotify.com/search/{query}")
-            speak("ok sir")
-            sleep(5)
-            pyautogui.click(x=493, y=539)
-            sleep(1)
-            pyautogui.click(x=493, y=539)
+            speak("ok sir playing")
+            sleep(8)
+            pyautogui.click(x=388, y=408)
+            sleep(2)
+            pyautogui.click(x=493, y=600)
             sleep(1)
             pyautogui.press('tab')
             pyautogui.press('enter')
@@ -203,9 +205,8 @@ def taskexecution():
         elif "play my song" in query:
             speak("ok sir playing..")
             webbrowser.open("https://open.spotify.com/collection/tracks")
-            sleep(4)
-            pyautogui.click(x=493, y=539)
-            sleep(1)
+            sleep(8)
+            pyautogui.click(x=450, y=539)
             pyautogui.press('tab')
             pyautogui.press('enter')
         elif "open snapchat" in query:
@@ -236,8 +237,6 @@ def taskexecution():
             webbrowser.open(f"https://www.amazon.in/s?k={query}")
             speak("ok sir")
         elif "search on youtube" in query:
-            # speak("sir, what should i play on youtube")
-            # cm = takecommand().lower()
             query = query.replace("jarvis", "")
             query = query.replace("search on youtube", "")
             webbrowser.open(f"https://www.youtube.com/results?search_query={query}")
