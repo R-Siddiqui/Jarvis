@@ -614,6 +614,11 @@ def taskexecution():
         elif "maximize" in query or "maximise" in query:
             speak("ok sir")
             pyautogui.hotkey('win', 'd')
+        elif "create image" in query:
+            query = query.replace("create image", "")
+            from image_generate import image_io
+            image_io(query)
+            
         else:
             generate(query)
             response = generate(query, system_prompt="Talk Like JARVIS")
@@ -663,3 +668,15 @@ if __name__ == "__main__":
         elif "turn off" in permission:
             speak("ok sir system going turn off")
             sys.exit()
+        elif "shut down my pc" in permission:
+            os.system("shutdown /s /t 5")
+            speak("ok sir pc is shutting down")
+        elif "restart my pc" in permission:
+            os.system("shutdown /r /t 5")
+            speak("ok sir pc is restarting")
+        elif "sleep my pc" in permission:
+            os.system("RUNDLL32.exe powrprof.dll,SetSuspendState 0,1,0")
+            speak("ok sir pc is going to sleep")
+        elif "lock my pc" in permission or "lock my screen" in permission:
+            speak("ok sir")
+            os.system("Rundll32.exe user32.dll,LockWorkStation")
