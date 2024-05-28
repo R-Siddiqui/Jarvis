@@ -1,6 +1,7 @@
 import os
 import webbrowser
 import pyperclip
+from jarvis import speak
 import google.generativeai as genai
 import os
 from time import sleep
@@ -157,13 +158,12 @@ def Gemini(prompt):
 
 
 if __name__ == "__main__":
-    def hello():
-        result
     
     while 1:
     
         prompt=input(">>> ")
         result = Gemini(prompt)
         print(result)
-        result
-        
+        def hello():
+            result        
+        hello()

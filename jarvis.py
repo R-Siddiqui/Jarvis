@@ -17,12 +17,7 @@ import win32clipboard
 import requests
 import json
 import os
-import glob
-from googletrans import Translator
 from playsound import playsound
-from dotenv import load_dotenv
-
-load_dotenv()
 from tkinter import simpledialog
 import pyperclip as p
 
@@ -113,7 +108,7 @@ Flagship Opensource:
     response = requests.post(
         url="https://openrouter.ai/api/v1/chat/completions",
         headers={
-            "Authorization": f"Bearer {os.environ.get('OPENROUTER')}",
+            "Authorization": f"Bearer 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",
         },
         data=json.dumps({
 
@@ -211,7 +206,7 @@ def taskexecution():
             pyautogui.press('enter')
         elif "open snapchat" in query:
             speak("opening snapchat sir..")
-            webbrowser.open("https://web.snapchat.com//446f1458-c502-5465-9785-04699a40b847")
+            webbrowser.open("https://web.snapchat.com")
         elif "open instagram" in query:
             speak("opening instagram sir..")
             webbrowser.open("https://www.instagram.com")
