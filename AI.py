@@ -154,7 +154,7 @@ def Gemini(prompt):
     ],
     "role": "model"})
 
-    return response.text
+    return response
 
 
 if __name__ == "__main__":
@@ -162,8 +162,5 @@ if __name__ == "__main__":
     while 1:
     
         prompt=input(">>> ")
-        result = Gemini(prompt)
-        print(result)
-        def hello():
-            result        
-        hello()
+        res = Gemini(prompt)
+        print(res)

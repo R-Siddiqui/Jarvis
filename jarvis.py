@@ -15,11 +15,18 @@ pyautogui.FAILSAFE = False
 from time import sleep
 import win32clipboard
 import requests
-import json
+import PIL
 import os
 from playsound import playsound
 from tkinter import simpledialog
 import pyperclip as p
+from groq import Groq
+
+
+client = Groq(
+    api_key= "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"
+)
+
 
 #engine
 
@@ -51,85 +58,10 @@ def takecommand():
             return query
 
         except Exception:
-            # speak("say the again please...")
             return "None"
-        query = query.lower()
-        return query
-    
-# A.I generater
- 
-def generate(query: str, system_prompt: str = "keep your response short and concise",
-             model: str = "openchat/openchat-7b", max_tokens: int = 8096,  # For Simple Models
-             temperature: float = 0.85, frequency_penalty: float = 0.34, presence_penalty: float = 0.06,
-             repetition_penalty: float = 1.0, top_k: int = 0) -> str:
-    """Sends a request to the OpenRouter API and returns the generated text using the specified model.
+            query = query.lower()
+            return query
 
-Args:
-    query (str): The input query or prompt.
-    system_prompt (str, optional): A context or introduction to set the style or tone of the generated response.
-                        Defaults to "Talk Like Shakespeare".
-    model (str, optional): The language model to use for generating the response.
-                Defaults to "openchat/openchat-7b".
-    max_tokens (int, optional): The maximum number of tokens to generate in the response.
-                    Defaults to 8096.
-    temperature (float, optional): A parameter controlling the diversity of the generated response.
-                        Higher values result in more diverse outputs. Defaults to 0.85.
-    frequency_penalty (float, optional): A penalty applied to tokens with low frequency in the training data.
-                            Defaults to 0.34.
-    presence_penalty (float, optional): A penalty applied to tokens based on their presence in the prompt.
-                            Defaults to 0.06.
-    repetition_penalty (float, optional): A penalty applied to repeated tokens in the generated response.
-                                Defaults to 1.0.
-    top_k (int, optional): The number of highest probability tokens to consider at each step of generation.
-                Defaults to 0, meaning no restriction.
-
-Returns:
-    str: The generated text.
-
-Available models:
-Free:
-    -"openchat/openchat-7b"
-    - "huggingfaceh4/zephyr-7b-beta"
-    "mistralai/mistral-7b-instruct:free"
-
-Flagship Opensource:
-    - "meta-llama/llama-3-8b-instruct:extended"
-    -"lynn/soliloquy-13"
-    - "mistralai/mixtral-8x22b-instruct"
-    - "meta-llama/llama-3-70b-instruct:nitro"
-
-    - Premium:
-    - "openai/gpt-4'
-    -"openai/gpt-4-0314"
-    "anthropic/claude-3-opus"
-    - "anthropic/claude-3-opus:beta"
-    - "openai/gpt-4-turbe'
-    """
-    response = requests.post(
-        url="https://openrouter.ai/api/v1/chat/completions",
-        headers={
-            "Authorization": f"Bearer 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",
-        },
-        data=json.dumps({
-
-            "messages": [
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": query},
-            ],
-
-            "model": model,
-            "max_tokens": max_tokens,
-            "temperature": temperature,
-            "frequency_penalty": frequency_penalty,
-            "presence_penalty": presence_penalty,
-            "repetition_penalty": repetition_penalty,
-            "top_k": top_k,
-        }))
-
-    try:
-        return response.json()["choices"][0]["message"]["content"].strip()
-    except Exception:
-        return f"Failed to Get Response \nError: {Exception}\nResponse: {response.text}"
 
 
 #to wish
@@ -384,8 +316,7 @@ def taskexecution():
             speak("ok sir")
             os.system("Rundll32.exe user32.dll,LockWorkStation")
 
-
-        #send email and messageL
+        #send email and message
 
         elif "send email" in query:
             speak("sir what should i say")
@@ -609,15 +540,38 @@ def taskexecution():
         elif "maximize" in query or "maximise" in query:
             speak("ok sir")
             pyautogui.hotkey('win', 'd')
-        elif "create image" in query:
+        
+        # A.I
+        elif "create image" in query or "create image of" in query:
             query = query.replace("create image", "")
-            from image_generate import image_io
-            image_io(query)
-            
-        else:
-            generate(query)
-            response = generate(query, system_prompt="Talk Like JARVIS")
+            query = query.replace("create image of", "")
+            U = "1tsQnE10qRB-Ye9fb4CuI1zOQZnfTLcYTZq5bncVdDcFF-QLAe25Z2QCylDM7hfqMpgKrwGrrZkIqoU01i7K0dvBVBCtYkRecXk1gAKqrJg2Sc2fuM_PNeCLDHcS6_FNF_dCd3v3pHWwgQfW9cxOEgb1D8niYrj51rEUMnj1kW9O448DoiZbbP2cdXfY_9BIHfBBS1BTaJ8gnHmOaHf_qIg"
+            dir = "C:\\Users\\rihan\\OneDrive\\Pictures\\image generate"
+            os.system(f'python -m BingImageCreator  -U {U} --prompt "{query}" --output-dir "{dir}"')
+            speak("done sir")
 
+
+        else:
+            completion = client.chat.completions.create(
+            model="llama3-8b-8192",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "you are my jarvis ai assistanr and you are very powerful ai you give me answer short and friendly remove your introduction and your"
+                },
+
+                {
+                    "role": "user",
+                    "content": query
+                },
+
+
+            ],
+            temperature=0.5,
+            max_tokens=1024,
+            top_p=1,
+        )
+            response = completion.choices[0].message.content
             if "write" in query:
                 file = open('C:\\Users\\rihan\\Videos\\Jarvis\\file.txt', 'w')
                 vl = file.write(response)

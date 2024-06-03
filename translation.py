@@ -1,11 +1,11 @@
 import os
 import time
-
+from deep_translator import GoogleTranslator
 import pyautogui
 import pyttsx3
 import speech_recognition as sr
 import win32clipboard
-from googletrans import Translator
+# from googletrans import Translator
 from gtts import gTTS
 from playsound import playsound
 
@@ -46,11 +46,10 @@ def translate_hi(query):
     win32clipboard.OpenClipboard()
     Text = win32clipboard.GetClipboardData()
     win32clipboard.CloseClipboard()
-    translator = Translator()
-    text_to_translate = translator.translate(Text, src="auto", dest="hi")
-    out = text_to_translate.text
+    translated = GoogleTranslator(source='auto', target='hi').translate(Text) 
+
     try:
-        speakgl = gTTS(text=out, lang="hi", slow= False)
+        speakgl = gTTS(text=translated, lang="hi", slow= False)
         speakgl.save("voice.mp3")
         speak("done sir")
         playsound("voice.mp3")
@@ -68,11 +67,9 @@ def translate_en(query):
     win32clipboard.OpenClipboard()
     Text = win32clipboard.GetClipboardData()
     win32clipboard.CloseClipboard()
-    translator = Translator()
-    text_to_translate = translator.translate(Text, src="auto", dest="en")
-    out = text_to_translate.text
+    translated = GoogleTranslator(source='auto', target='en').translate(Text) 
     try:
-        speakgl = gTTS(text=out, lang="en", slow= False)
+        speakgl = gTTS(text=translated, lang="en", slow= False)
         speakgl.save("voice.mp3")
         speak("done sir")
         playsound("voice.mp3")
