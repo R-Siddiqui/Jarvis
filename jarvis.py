@@ -14,13 +14,13 @@ import pyautogui
 pyautogui.FAILSAFE = False
 from time import sleep
 import win32clipboard
-import requests
-import PIL
 import os
 from playsound import playsound
 from tkinter import simpledialog
 import pyperclip as p
 from groq import Groq
+import shutil
+import glob
 
 
 client = Groq(
@@ -33,6 +33,8 @@ client = Groq(
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
 engine.setProperty('voices', voices[0].id)
+
+# image
 
 
 
@@ -81,7 +83,7 @@ def wish():
 #taskcommand
 
 def taskexecution():
-    speak("yes sir what should i help you")
+    speak("at your service sir")
     while True:
         query = takecommand().lower()
 
@@ -172,7 +174,20 @@ def taskexecution():
             speak("i am made by rihan")
         elif "who are you" in query:
             speak("i am jarvis a Artificial intelligence ")
+        elif "show me the direction of" in query or "show me the way of" in query:
+            query = query.replace("show me the direction of","")
+            query = query.replace("show me the way of","")
+            webbrowser.open(f"https://www.google.com/maps/dir/your location/{query}")
+            sleep(2)
+            pyautogui.press("enter")
+            speak("here sir")
 
+        elif "where is" in query:
+            query = query.replace("where is","") 
+            sleep(1)   
+            webbrowser.open(f"https://www.google.com/maps/place/{query}")
+            sleep(2)
+            speak("here sir")
         #open command
 
         elif "open notepad" in query:
@@ -540,15 +555,20 @@ def taskexecution():
         elif "maximize" in query or "maximise" in query:
             speak("ok sir")
             pyautogui.hotkey('win', 'd')
+        elif "show me properties" in query:
+            pyautogui.hotkey("alt","enter")
         
         # A.I
-        elif "create image" in query or "create image of" in query:
-            query = query.replace("create image", "")
+        elif "create a image of " in query or "genrate a image of " in query:
+            from generate_img import generate
             query = query.replace("create image of", "")
-            U = "1tsQnE10qRB-Ye9fb4CuI1zOQZnfTLcYTZq5bncVdDcFF-QLAe25Z2QCylDM7hfqMpgKrwGrrZkIqoU01i7K0dvBVBCtYkRecXk1gAKqrJg2Sc2fuM_PNeCLDHcS6_FNF_dCd3v3pHWwgQfW9cxOEgb1D8niYrj51rEUMnj1kW9O448DoiZbbP2cdXfY_9BIHfBBS1BTaJ8gnHmOaHf_qIg"
-            dir = "C:\\Users\\rihan\\OneDrive\\Pictures\\image generate"
-            os.system(f'python -m BingImageCreator  -U {U} --prompt "{query}" --output-dir "{dir}"')
-            speak("done sir")
+            prompt = query
+            generate(prompt)
+            success, file_path = generate(prompt)
+            os.startfile("C:\\Users\\rihan\\OneDrive\\Pictures\\dump\\img.jpeg")
+            pyautogui.keyDown('ctrl')
+            pyautogui.press('c')
+            pyautogui.keyUp('ctrl')
 
 
         else:
@@ -601,31 +621,31 @@ def taskexecution():
 
 
 if __name__ == "__main__":
-    wish()
     while True:
-        permission = takecommand().lower()
-        if "jarvis" in permission:
-            taskexecution()
-        elif "wake up" in permission:
-            taskexecution()
-        elif "breakup" in permission:
-            taskexecution()
-        elif "main kab" in permission:
-            taskexecution()
-        elif "makeup" in permission:
-            taskexecution()
-        elif "turn off" in permission:
-            speak("ok sir system going turn off")
-            sys.exit()
-        elif "shut down my pc" in permission:
-            os.system("shutdown /s /t 5")
-            speak("ok sir pc is shutting down")
-        elif "restart my pc" in permission:
-            os.system("shutdown /r /t 5")
-            speak("ok sir pc is restarting")
-        elif "sleep my pc" in permission:
-            os.system("RUNDLL32.exe powrprof.dll,SetSuspendState 0,1,0")
-            speak("ok sir pc is going to sleep")
-        elif "lock my pc" in permission or "lock my screen" in permission:
-            speak("ok sir")
-            os.system("Rundll32.exe user32.dll,LockWorkStation")
+        taskexecution()
+        # permission = takecommand().lower()
+        # if "jarvis" in permission:
+        #     taskexecution()
+        # elif "wake up" in permission:
+        #     taskexecution()
+        # elif "breakup" in permission:
+        #     taskexecution()
+        # elif "main kab" in permission:
+        #     taskexecution()
+        # elif "makeup" in permission:
+        #     taskexecution()
+        # elif "turn off" in permission:
+        #     speak("ok sir system going turn off")
+        #     sys.exit()
+        # elif "shut down my pc" in permission:
+        #     os.system("shutdown /s /t 5")
+        #     speak("ok sir pc is shutting down")
+        # elif "restart my pc" in permission:
+        #     os.system("shutdown /r /t 5")
+        #     speak("ok sir pc is restarting")
+        # elif "sleep my pc" in permission:
+        #     os.system("RUNDLL32.exe powrprof.dll,SetSuspendState 0,1,0")
+        #     speak("ok sir pc is going to sleep")
+        # elif "lock my pc" in permission or "lock my screen" in permission:
+        #     speak("ok sir")
+        #     os.system("Rundll32.exe user32.dll,LockWorkStation")
