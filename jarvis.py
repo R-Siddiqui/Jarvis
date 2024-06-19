@@ -34,8 +34,6 @@ engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
 engine.setProperty('voices', voices[0].id)
 
-# image
-
 
 
 #text to voice
@@ -559,16 +557,17 @@ def taskexecution():
             pyautogui.hotkey("alt","enter")
         
         # A.I
-        elif "create a image of " in query or "genrate a image of " in query:
-            from generate_img import generate
-            query = query.replace("create image of", "")
-            prompt = query
-            generate(prompt)
-            success, file_path = generate(prompt)
-            os.startfile("C:\\Users\\rihan\\OneDrive\\Pictures\\dump\\img.jpeg")
-            pyautogui.keyDown('ctrl')
-            pyautogui.press('c')
-            pyautogui.keyUp('ctrl')
+        # elif "create image of " in query or "generate image of " in query:
+        #     from generate_img import generate
+        #     query = query.replace("create image of", "")
+        #     query = query.replace("generate image of ", "")
+        #     prompt = query
+        #     generate(prompt)
+        #     success, file_path = generate(prompt)
+        #     os.startfile("C:\\Users\\rihan\\OneDrive\\Pictures\\dump\\img.jpeg")
+        #     pyautogui.keyDown('ctrl')
+        #     pyautogui.press('c')
+        #     pyautogui.keyUp('ctrl')
 
 
         else:
@@ -621,31 +620,31 @@ def taskexecution():
 
 
 if __name__ == "__main__":
+    wish()
     while True:
-        taskexecution()
-        # permission = takecommand().lower()
-        # if "jarvis" in permission:
-        #     taskexecution()
-        # elif "wake up" in permission:
-        #     taskexecution()
-        # elif "breakup" in permission:
-        #     taskexecution()
-        # elif "main kab" in permission:
-        #     taskexecution()
-        # elif "makeup" in permission:
-        #     taskexecution()
-        # elif "turn off" in permission:
-        #     speak("ok sir system going turn off")
-        #     sys.exit()
-        # elif "shut down my pc" in permission:
-        #     os.system("shutdown /s /t 5")
-        #     speak("ok sir pc is shutting down")
-        # elif "restart my pc" in permission:
-        #     os.system("shutdown /r /t 5")
-        #     speak("ok sir pc is restarting")
-        # elif "sleep my pc" in permission:
-        #     os.system("RUNDLL32.exe powrprof.dll,SetSuspendState 0,1,0")
-        #     speak("ok sir pc is going to sleep")
-        # elif "lock my pc" in permission or "lock my screen" in permission:
-        #     speak("ok sir")
-        #     os.system("Rundll32.exe user32.dll,LockWorkStation")
+        permission = takecommand().lower()
+        if "jarvis" in permission:
+            taskexecution()
+        elif "wake up" in permission:
+            taskexecution()
+        elif "breakup" in permission:
+            taskexecution()
+        elif "main kab" in permission:
+            taskexecution()
+        elif "makeup" in permission:
+            taskexecution()
+        elif "turn off" in permission:
+            speak("ok sir system going turn off")
+            sys.exit()
+        elif "shut down my pc" in permission:
+            os.system("shutdown /s /t 5")
+            speak("ok sir pc is shutting down")
+        elif "restart my pc" in permission:
+            os.system("shutdown /r /t 5")
+            speak("ok sir pc is restarting")
+        elif "sleep my pc" in permission:
+            os.system("RUNDLL32.exe powrprof.dll,SetSuspendState 0,1,0")
+            speak("ok sir pc is going to sleep")
+        elif "lock my pc" in permission or "lock my screen" in permission:
+            speak("ok sir")
+            os.system("Rundll32.exe user32.dll,LockWorkStation")

@@ -73,7 +73,7 @@ messages= [
     {
         "parts": [
             {
-                "text": '```python\nfrom toolkit.ImagesGenration import Generate_Images, Show_Image\nIMGS = Generate_Images(prompt="iron man")\nprint(IMGS)\nIMGS_TO_SHOW = Show_Image(IMGS)\nIMGS_TO_SHOW.open(0)\nIMGS_TO_SHOW.open(1)\n ``` \n ```python\nfrom func.Jukebox.YouTube import MusicPlayer\n#taks song name and it stats playing music\nncs=MusicPlayer("ncs")\n#any btw 0-100\nncs.Vol(30)\n#pause or play\nncs.Play()\nncs.Pause()\n#nextsong\nncsNext()\n#quit song\nncs.Quit()\n```\n ```python\nfrom jarvis import generate\nfrom toolkit.Mistral import Mistral7B\nfrom toolkit.Filter import Filter\n\n#u can use chat gpt its slow but its accurate\nprint(generate("essay on saving environment *under 100 words*"))\ncode=generate("python code to open google chrome *** use python programing language. just write complete code nothing else, also don\'t dare to use input function *** ")\n\n# Filter return only python code from provided txt\nexec(Filter(code)) ```\n\n#u can use Mistral7B its fast but not much accurate it can work grate but only for small task not grater than 256 tokens\nprint(Mistral7B("hii",temperature=0.9))\n```\n```python\nfrom toolkit.Alarm import set_alarm\n\nalarm_time ="02:27:50"\nsound_file ="audio//Unknown Brain MATAFAKA.mp3"\nset_alarm(alarm_time, sound_file)\n```'
+                "text": '```python\nfrom generate_img import generate, Show_Image\nIMGS = generate(prompt="iron man")\nprint(IMGS)\nIMGS_TO_SHOW = Show_Image(IMGS)\nIMGS_TO_SHOW.open(0)\nIMGS_TO_SHOW.open(1)\n ``` \n ```python\nfrom func.Jukebox.YouTube import MusicPlayer\n#taks song name and it stats playing music\nncs=MusicPlayer("ncs")\n#any btw 0-100\nncs.Vol(30)\n#pause or play\nncs.Play()\nncs.Pause()\n#nextsong\nncsNext()\n#quit song\nncs.Quit()\n```\n ```python\nfrom jarvis import generate\nfrom toolkit.Mistral import Mistral7B\nfrom toolkit.Filter import Filter\n\n#u can use chat gpt its slow but its accurate\nprint(generate("essay on saving environment *under 100 words*"))\ncode=generate("python code to open google chrome *** use python programing language. just write complete code nothing else, also don\'t dare to use input function *** ")\n\n# Filter return only python code from provided txt\nexec(Filter(code)) ```\n\n#u can use Mistral7B its fast but not much accurate it can work grate but only for small task not grater than 256 tokens\nprint(Mistral7B("hii",temperature=0.9))\n```\n```python\nfrom toolkit.Alarm import set_alarm\n\nalarm_time ="02:27:50"\nsound_file ="audio//Unknown Brain MATAFAKA.mp3"\nset_alarm(alarm_time, sound_file)\n```'
             }
         ],
         "role": "user",
@@ -86,7 +86,7 @@ messages= [
     {
         "parts": [
             {
-                "text": 'python\nfrom toolkit. ImagesGenration import Generate_Images, Show_Image\nIMGS = Generate_Images(prompt="A playful kitten with bright eyes and a fluffy tail.")\nIMGS_TO_SHOW =Show_Image(IMGS)\nIMGS_TO_SHOW.open(0)\n ```'
+                "text": 'python\nfrom  generate_img import generate, Show_Image\nIMGS = generate(prompt="A playful kitten with bright eyes and a fluffy tail.")\nIMGS_TO_SHOW =Show_Image(IMGS)\nIMGS_TO_SHOW.open(0)\n ```'
             }
         ],
         "role": "model",
@@ -154,7 +154,7 @@ def Gemini(prompt):
     ],
     "role": "model"})
 
-    return response
+    return response.text
 
 
 if __name__ == "__main__":
