@@ -19,8 +19,6 @@ from playsound import playsound
 from tkinter import simpledialog
 import pyperclip as p
 from groq import Groq
-import shutil
-import glob
 
 
 client = Groq(
@@ -87,17 +85,8 @@ def taskexecution():
 
         #online command
 
-        if "what is my ip address" in query:
-            speak("i am finding your ip address")
-            ip = get('https://api.ipify.org').text
-            speak(f"your ip address is {ip}")          
-        elif 'wikipedia' in query:
-            speak("searching on wikipedia...")
-            query = query.replace("wikipedia", "")
-            results = wikipedia.summary(query, sentences=3)
-            speak("according to wikipedia")
-            speak(results)
-        elif "play song on spotify" in query:
+
+        if "play song on spotify" in query:
             query = query.replace("play song on spotify", "")
             webbrowser.open(f"https://open.spotify.com/search/{query}")
             speak("ok sir playing")
@@ -168,13 +157,11 @@ def taskexecution():
             query = query.replace("search on youtube", "")
             webbrowser.open(f"https://www.youtube.com/results?search_query={query}")
             speak("ok sir")
-        elif "who made you" in query:
-            speak("i am made by rihan")
-        elif "who are you" in query:
-            speak("i am jarvis a Artificial intelligence ")
-        elif "show me the direction of" in query or "show me the way of" in query:
+        elif "show me the direction of" in query or "show me the way of" in query or "show me the direction" in query or "show me the way" in query:
             query = query.replace("show me the direction of","")
             query = query.replace("show me the way of","")
+            query = query.replace("show me the direction","")
+            query = query.replace("show me the way","")
             webbrowser.open(f"https://www.google.com/maps/dir/your location/{query}")
             sleep(2)
             pyautogui.press("enter")
@@ -206,27 +193,6 @@ def taskexecution():
         elif "open control panel" in query:
             speak("opening control panel sir..")
             os.system("start control panel")
-        elif "open camera" in query:
-            speak("opening camera sir..")  # camera
-            cap = cv2.VideoCapture(0)
-            while True:
-                ret, img = cap.read()
-                cv2.imshow('webcam', img)
-                k = cv2.waitKey(50)
-                if k == 27:
-                    break
-            cap.release()
-            cv2.destroyAllWindows()
-        elif "play song" in query:
-            speak("playing song sir..")
-            music_dir = "C:\\Users\\rihan\\Music\\Song"
-            song = os.listdir(music_dir)
-            os.startfile(os.path.join(music_dir, song[0]))
-        elif "play music" in query:
-            speak("playing music sir")
-            music_dir = "C:\\Users\\rihan\\Music\\Song"
-            song = os.listdir(music_dir)
-            os.startfile(os.path.join(music_dir, song[0]))
         elif "open word" in query or "open ms word"in query:
             speak("opening sir")
             npath = "C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE"
@@ -308,11 +274,6 @@ def taskexecution():
             speak("okay closing sir")
             os.system("taskkill /f /IM nearby_share.exe")
 
-        #jokes
-
-        elif "tell me a joke" in query:
-            joke = pyjokes.get_joke()
-            speak(joke)
 
         #basic computer command
 
@@ -505,25 +466,6 @@ def taskexecution():
         elif "close this" in query:
             speak("ok sir")
             pyautogui.hotkey('alt', 'F4')
-        elif "open website " in query:
-            query = query.replace("open website", "")
-            query = query.replace("open", "")
-            query = query.replace("jarvis", "")
-            query = query.replace("launch", "")
-            query = query.replace(" ", "")
-            speak("any other command sir")
-            ji = takecommand().lower()
-            if "search" in ji:
-                ji = ji.replace("search", "")
-                speak("ok sir .... ")
-                webbrowser.open(f"https://www.{query}.com//search?q={ji}")
-            else:
-                speak("opening sir .... ")
-                webbrowser.open(f"https://www.{query}.com//")
-        elif "good" in query:
-            speak("thanks sir its my pleasure")
-        elif "thanks" in query:
-            speak("welcome sir")
         elif "copy" in query:
             pyautogui.keyDown('ctrl')
             pyautogui.press('a')
@@ -541,12 +483,6 @@ def taskexecution():
             speak("ok sir")
             pyautogui.hotkey('win', 'h')
             break
-        elif "delete" in query:
-            speak("ok sir")
-            pyautogui.press('del')
-            pyautogui.press('enter')
-        elif "stop" in query:
-            break
         elif "minimize" in query or "minimise" in query:
             speak("ok sir")
             pyautogui.hotkey('win', 'd')
@@ -556,18 +492,6 @@ def taskexecution():
         elif "show me properties" in query:
             pyautogui.hotkey("alt","enter")
         
-        # A.I
-        # elif "create image of " in query or "generate image of " in query:
-        #     from generate_img import generate
-        #     query = query.replace("create image of", "")
-        #     query = query.replace("generate image of ", "")
-        #     prompt = query
-        #     generate(prompt)
-        #     success, file_path = generate(prompt)
-        #     os.startfile("C:\\Users\\rihan\\OneDrive\\Pictures\\dump\\img.jpeg")
-        #     pyautogui.keyDown('ctrl')
-        #     pyautogui.press('c')
-        #     pyautogui.keyUp('ctrl')
 
 
         else:
