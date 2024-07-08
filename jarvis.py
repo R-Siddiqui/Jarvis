@@ -2,12 +2,9 @@ import pyttsx3
 import datetime
 import speech_recognition as sr
 import datetime
-import cv2
 from requests import get
-import wikipedia
 import webbrowser
 import sys
-import pyjokes
 import smtplib
 from time import sleep
 import pyautogui
@@ -79,7 +76,7 @@ def wish():
 #taskcommand
 
 def taskexecution():
-    speak("at your service sir")
+    speak("welcome back sir what can help you today")
     while True:
         query = takecommand().lower()
 
@@ -290,7 +287,7 @@ def taskexecution():
             speak("ok sir")
             os.system("Rundll32.exe user32.dll,LockWorkStation")
 
-        #send email and message
+        #ood thanks! email and message
 
         elif "send email" in query:
             speak("sir what should i say")
@@ -491,56 +488,74 @@ def taskexecution():
             pyautogui.hotkey('win', 'd')
         elif "show me properties" in query:
             pyautogui.hotkey("alt","enter")
+        elif "search a image" in query or "search a image of" in query:
+            query = query.replace("search a image", "")
+            query = query.replace("search a image of", "")
+            webbrowser.open(f"https://www.google.com/search?q={query}&sca_esv=999851109142aa1d&sxsrf=ADLYWIKaYd7sWPkbdSoYHke_KlEx417xzA:1720102322675&source=hp&biw=1933&bih=900&ei=sq2GZuqYJ7LAvr0P6vqhqAo&iflsig=AL9hbdgAAAAAZoa7wl-FoEvaV80pU1xrWfo1DMJQUQsS&oq=&gs_lp=EgNpbWciACoCCAAyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gJIsClQAFgAcAF4AJABAJgBAKABAKoBALgBAcgBAIoCC2d3cy13aXotaW1nmAIBoAIPqAIKmAMPkgcBMaAHAA&sclient=img&udm=2")
+        elif "search image" in query or "search image of" in query:
+            query = query.replace("search image", "")
+            query = query.replace("search image of", "")
+            webbrowser.open(f"https://www.google.com/search?q={query}&sca_esv=999851109142aa1d&sxsrf=ADLYWIKaYd7sWPkbdSoYHke_KlEx417xzA:1720102322675&source=hp&biw=1933&bih=900&ei=sq2GZuqYJ7LAvr0P6vqhqAo&iflsig=AL9hbdgAAAAAZoa7wl-FoEvaV80pU1xrWfo1DMJQUQsS&oq=&gs_lp=EgNpbWciACoCCAAyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gJIsClQAFgAcAF4AJABAJgBAKABAKoBALgBAcgBAIoCC2d3cy13aXotaW1nmAIBoAIPqAIKmAMPkgcBMaAHAA&sclient=img&udm=2")
         
 
 
         else:
-            completion = client.chat.completions.create(
-            model="llama3-8b-8192",
-            messages=[
-                {
-                    "role": "system",
-                    "content": "you are my jarvis ai assistanr and you are very powerful ai you give me answer short and friendly remove your introduction and your"
-                },
+            if "open" in query:
+                speak("ok sir")
+                query = query.replace("open", "")
+                pyautogui.hotkey('win', 's')
+                pyautogui.write(query)
+                sleep(1)
+                pyautogui.press('enter')
+                sleep(2)
 
-                {
-                    "role": "user",
-                    "content": query
-                },
-
-
-            ],
-            temperature=0.5,
-            max_tokens=1024,
-            top_p=1,
-        )
-            response = completion.choices[0].message.content
-            if "write" in query:
-                file = open('C:\\Users\\rihan\\Videos\\Jarvis\\file.txt', 'w')
-                vl = file.write(response)
-                file.close()
-                speak("here sir")
-                p.copy(vl)
-                npath = "C:\\Users\\rihan\\Videos\\Jarvis\\file.txt"  #8888
-                os.startfile(npath)
-            elif "none" in query:
-                pass
             else:
-                p.copy(response)
-                speak(response)
+                completion = client.chat.completions.create(
+                model="llama3-8b-8192",
+                messages=[
+                    {
+                        "role": "system",
+                        "content": "you are my jarvis ai assistanr and you are very powerful ai you give me answer short and friendly remove your introduction and your"
+                    },
 
-                q = takecommand().lower()
-                if "show me" in q:
-                    npath = "C:\\Windows\\System32\\notepad.exe"
+                    {
+                        "role": "user",
+                        "content": query
+                    },
+
+
+                ],
+                temperature=0.5,
+                max_tokens=1024,
+                top_p=1,
+            )
+                response = completion.choices[0].message.content
+                if "write" in query:
+                    file = open('C:\\Users\\rihan\\Videos\\Jarvis\\file.txt', 'w')
+                    vl = file.write(response)
+                    file.close()
+                    speak("here sir")
+                    p.copy(vl)
+                    npath = "C:\\Users\\rihan\\Videos\\Jarvis\\file.txt"  #8888
                     os.startfile(npath)
-                    sleep(2)
-                    pyautogui.hotkey('ctrl', 'A')
-                    pyautogui.press('backspace')
-                    pyautogui.keyDown('ctrl')
-                    pyautogui.press('v')
-                    pyautogui.keyUp('ctrl')
-                else:
+                elif "none" in query:
                     pass
+                else:
+                    p.copy(response)
+                    speak(response)
+
+                    q = takecommand().lower()
+                    if "show me" in q:
+                        npath = "C:\\Windows\\System32\\notepad.exe"
+                        os.startfile(npath)
+                        sleep(2)
+                        pyautogui.hotkey('ctrl', 'A')
+                        pyautogui.press('backspace')
+                        pyautogui.keyDown('ctrl')
+                        pyautogui.press('v')
+                        pyautogui.keyUp('ctrl')
+                    else:
+                        pass
 
 
 if __name__ == "__main__":

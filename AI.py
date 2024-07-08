@@ -8,10 +8,6 @@ from time import sleep
 from rich import print
 genai.configure(api_key= "AIzaSyAyjkrPXQ5KCrW-w4va7TZCgjrBzvZTX2g")
 
-# Create the model
-
-# See https://ai.google.dev/api/python/google/generativeai/GenerativeModel
-
 generation_config = {
   "temperature": 0.7,
   "top_p": 1,
@@ -159,8 +155,40 @@ def Gemini(prompt):
 
 if __name__ == "__main__":
     
-    while 1:
     
-        prompt=input(">>> ")
-        res = Gemini(prompt)
-        print(res)
+    while True:
+        prompt = input("You: ")
+        def save_to_file(text, filename):
+            with open(filename, 'w') as file:
+                file.write(text)
+        def remove_symbol(text, symbol):
+            return text.replace(symbol, '')
+        
+        # Usage
+        response = Gemini(prompt)
+        cleaned_response = remove_symbol(response, "```")
+        
+        # Save the cleaned response to a file
+        save_to_file(cleaned_response,'output.py')
+
+
+
+        def remove_word_from_file(filename, word):
+            with open(filename, 'r') as file:
+                content = file.read()
+            
+            cleaned_content = content.replace(word, '')
+            
+            with open(filename, 'w') as file:
+                file.write(cleaned_content)
+
+        # Usage
+        remove_word_from_file('output.py', 'python')
+
+        # Define the path to the output.py file
+        output_file_path = 'output.py'
+
+        with open("output.py", mode="r", encoding="utf-8") as output:
+            code = output.read()
+        
+        exec(code)
