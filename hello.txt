@@ -1,7 +1,0 @@
-pyttsx3
-requests
-wikipedia
-pyautogui
-playsound
-pyperclip
-groq

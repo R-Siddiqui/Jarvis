@@ -88,9 +88,9 @@ def taskexecution():
             webbrowser.open(f"https://open.spotify.com/search/{query}")
             speak("ok sir playing")
             sleep(8)
-            pyautogui.click(x=388, y=408)
+            pyautogui.click(x=652, y=351)
             sleep(2)
-            pyautogui.click(x=493, y=600)
+            pyautogui.click(x=712, y=561)
             sleep(1)
             pyautogui.press('tab')
             pyautogui.press('enter')
@@ -119,7 +119,7 @@ def taskexecution():
             speak("ok sir playing..")
             webbrowser.open("https://open.spotify.com/collection/tracks")
             sleep(8)
-            pyautogui.click(x=450, y=539)
+            pyautogui.click(x=470, y=500)
             pyautogui.press('tab')
             pyautogui.press('enter')
         elif "open snapchat" in query:
@@ -496,7 +496,8 @@ def taskexecution():
             query = query.replace("search image", "")
             query = query.replace("search image of", "")
             webbrowser.open(f"https://www.google.com/search?q={query}&sca_esv=999851109142aa1d&sxsrf=ADLYWIKaYd7sWPkbdSoYHke_KlEx417xzA:1720102322675&source=hp&biw=1933&bih=900&ei=sq2GZuqYJ7LAvr0P6vqhqAo&iflsig=AL9hbdgAAAAAZoa7wl-FoEvaV80pU1xrWfo1DMJQUQsS&oq=&gs_lp=EgNpbWciACoCCAAyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gJIsClQAFgAcAF4AJABAJgBAKABAKoBALgBAcgBAIoCC2d3cy13aXotaW1nmAIBoAIPqAIKmAMPkgcBMaAHAA&sclient=img&udm=2")
-        
+        elif "change the application" in query:
+            pyautogui.hotkey("alt","tab")
 
 
         else:
