@@ -225,10 +225,16 @@ def taskexecution():
 
         # close command 
 
-        elif "take break" in query or "take rest" in query:
+        elif "take break" in query:
             speak("okay sir but i will stay here")
             break
-        elif "take a break" in query or "take a rest" in query:
+        elif "take rest" in query:
+            speak("okay sir but i will stay here")
+            break
+        elif "take a break" in query:
+            speak("okay sir but i will stay here")
+            break
+        elif "take a rest" in query:
             speak("okay sir but i will stay here")
             break
         elif "close notepad" in query:
@@ -498,8 +504,25 @@ def taskexecution():
             webbrowser.open(f"https://www.google.com/search?q={query}&sca_esv=999851109142aa1d&sxsrf=ADLYWIKaYd7sWPkbdSoYHke_KlEx417xzA:1720102322675&source=hp&biw=1933&bih=900&ei=sq2GZuqYJ7LAvr0P6vqhqAo&iflsig=AL9hbdgAAAAAZoa7wl-FoEvaV80pU1xrWfo1DMJQUQsS&oq=&gs_lp=EgNpbWciACoCCAAyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gJIsClQAFgAcAF4AJABAJgBAKABAKoBALgBAcgBAIoCC2d3cy13aXotaW1nmAIBoAIPqAIKmAMPkgcBMaAHAA&sclient=img&udm=2")
         elif "change the application" in query:
             pyautogui.hotkey("alt","tab")
-
-
+        elif "hacking" in query:
+            speak("opening your hacking machine")
+            npath = "C:\\Program Files\\Oracle\\VirtualBox\\VirtualBox.exe"
+            os.startfile(npath)
+        elif "close tab" in query:
+            speak("ok sir")
+            pyautogui.hotkey('ctrl', 'w')
+        elif "bluetooth" in query:
+            speak("opening your bluetooth device")
+            sleep(1)
+            pyautogui.keyDown('win')
+            pyautogui.press('a')
+            pyautogui.keyUp('win')
+            sleep(2)
+            pyautogui.click(x=1697, y=586)
+            sleep(1)
+            pyautogui.keyDown('win')
+            pyautogui.press('a')
+            pyautogui.keyUp('win')
         else:
             if "open" in query:
                 speak("ok sir")
@@ -579,12 +602,18 @@ if __name__ == "__main__":
         elif "shut down my pc" in permission:
             os.system("shutdown /s /t 5")
             speak("ok sir pc is shutting down")
+            sleep(1)
+            sys.exit()
         elif "restart my pc" in permission:
             os.system("shutdown /r /t 5")
+            sleep(1)
+            sys.exit()
             speak("ok sir pc is restarting")
         elif "sleep my pc" in permission:
             os.system("RUNDLL32.exe powrprof.dll,SetSuspendState 0,1,0")
             speak("ok sir pc is going to sleep")
+            sleep(1)
+            sys.exit()
         elif "lock my pc" in permission or "lock my screen" in permission:
             speak("ok sir")
             os.system("Rundll32.exe user32.dll,LockWorkStation")
