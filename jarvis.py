@@ -44,7 +44,7 @@ def takecommand():
     with sr.Microphone() as source:
         print("Listening...")
         r.pause_threshold = 1
-        audio = r.listen(source, timeout=100, phrase_time_limit=5)
+        audio = r.listen(source, timeout=100, phrase_time_limit=6)
 
         try:
             print("Recognizing...")
@@ -121,6 +121,7 @@ def taskexecution():
             sleep(8)
             pyautogui.click(x=470, y=500)
             pyautogui.press('tab')
+            pyautogui.press('enter')
             pyautogui.press('enter')
         elif "open snapchat" in query:
             speak("opening snapchat sir..")
@@ -512,7 +513,7 @@ def taskexecution():
             speak("ok sir")
             pyautogui.hotkey('ctrl', 'w')
         elif "bluetooth" in query:
-            speak("opening your bluetooth device")
+            speak("ok sir now check")
             sleep(1)
             pyautogui.keyDown('win')
             pyautogui.press('a')
@@ -523,6 +524,29 @@ def taskexecution():
             pyautogui.keyDown('win')
             pyautogui.press('a')
             pyautogui.keyUp('win')
+        elif "remember it" in query:
+            speak("ok sir i remember")
+            pyautogui.press('win')
+            pyautogui.press('tab')
+            sleep(0.5)
+            pyautogui.press('enter')
+            sleep(2)
+            pyautogui.hotkey('ctrl','N') 
+            query = query.replace("remember it", "")
+            p.copy(query)
+            pyautogui.keyDown('ctrl')
+            pyautogui.press('v')
+            pyautogui.keyUp('ctrl')
+            sleep(1)
+            pyautogui.press('enter')
+            sleep(0.5)
+            pyautogui.hotkey('alt','F4')
+        elif "search" in query:
+            speak("ok sir")
+            query = query.replace("search", "")
+            pyautogui.press('/')
+            pyautogui.write(query)
+            
         else:
             if "open" in query:
                 speak("ok sir")
@@ -532,7 +556,6 @@ def taskexecution():
                 sleep(1)
                 pyautogui.press('enter')
                 sleep(2)
-
             else:
                 completion = client.chat.completions.create(
                 model="llama3-8b-8192",
