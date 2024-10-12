@@ -191,4 +191,4 @@ if __name__ == "__main__":
         with open("output.py", mode="r", encoding="utf-8") as output:
             code = output.read()
         
-        exec(code)
+        speak(exec(code))

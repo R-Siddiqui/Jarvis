@@ -25,9 +25,8 @@ client = Groq(
 
 #engine
 
-engine = pyttsx3.init('sapi5')
-voices = engine.getProperty('voices')
-engine.setProperty('voices', voices[0].id)
+recognizer = sr.Recognizer()
+engine = pyttsx3.init()
 
 
 
@@ -40,22 +39,18 @@ def speak(audio):
 
 #voice to text
 def takecommand():
-    r = sr.Recognizer()
+    """Listen for voice input and return it as text."""
     with sr.Microphone() as source:
         print("Listening...")
-        r.pause_threshold = 1
-        audio = r.listen(source, timeout=100, phrase_time_limit=6)
-
+        audio = recognizer.listen(source)
         try:
-            print("Recognizing...")
-            query = r.recognize_google(audio, language='en-in')
-            print(f"user said: {query}")
+            query = recognizer.recognize_google(audio).lower()
+            print(f"Recognized: {query}")
             return query
-
-        except Exception:
-            return "None"
-            query = query.lower()
-            return query
+        except sr.UnknownValueError:
+            return ""
+        except sr.RequestError:
+            return "Sorry, there seems to be an issue with the service."
 
 
 
@@ -75,15 +70,8 @@ def wish():
 
 #taskcommand
 
-def taskexecution():
-    speak("welcome back sir what can help you today")
-    while True:
-        query = takecommand().lower()
-
-        #online command
-
-
-        if "play song on spotify" in query:
+def taskexecution(query):
+    if "play song on spotify" in query:
             query = query.replace("play song on spotify", "")
             webbrowser.open(f"https://open.spotify.com/search/{query}")
             speak("ok sir playing")
@@ -94,28 +82,28 @@ def taskexecution():
             sleep(1)
             pyautogui.press('tab')
             pyautogui.press('enter')
-        elif "translate into hindi" in query:
+    elif "translate into hindi" in query:
             from translation import translate_hi
             translate_hi(query)
-        elif "translate into english" in query:
+    elif "translate into english" in query:
             from translation import translate_en
             translate_en(query)
-        elif "remove background" in query:
+    elif "remove background" in query:
             speak("sure sir please wait")
             import background
             background.bg()
             speak("done sir")
-        elif "open youtube" in query:
+    elif "open youtube" in query:
             speak("opening youtube sir..")
             webbrowser.open("www.youtube.com")
-        elif "open whatsapp" in query:
+    elif "open whatsapp" in query:
             speak("opening WhatsApp sir")
             pyautogui.hotkey('win', 't')
             pyautogui.press('enter')
-        elif "open spotify" in query:
+    elif "open spotify" in query:
             speak("opening spotify sir..")
             webbrowser.open("https://open.spotify.com")
-        elif "play my song" in query:
+    elif "play my song" in query:
             speak("ok sir playing..")
             webbrowser.open("https://open.spotify.com/collection/tracks")
             sleep(8)
@@ -123,39 +111,39 @@ def taskexecution():
             pyautogui.press('tab')
             pyautogui.press('enter')
             pyautogui.press('enter')
-        elif "open snapchat" in query:
+    elif "open snapchat" in query:
             speak("opening snapchat sir..")
             webbrowser.open("https://web.snapchat.com")
-        elif "open instagram" in query:
+    elif "open instagram" in query:
             speak("opening instagram sir..")
             webbrowser.open("https://www.instagram.com")
-        elif "open my mail" in query:
+    elif "open my mail" in query:
             speak("opening mail sir..")
             webbrowser.open("https://mail.google.com//mail//u//0//#inbox")
-        elif "open mail" in query:
+    elif "open mail" in query:
             speak("opening mail sir..")
             webbrowser.open("https://mail.google.com/mail/u/0/#inbox")
-        elif "open google and search" in query:
+    elif "open google and search" in query:
             query = query.replace("jarvis", "")
             query = query.replace("open google and search", "")
             webbrowser.open(f"https://www.google.com/search?q={query}")
             speak("ok sir")
-        elif "open flipkart and search" in query:
+    elif "open flipkart and search" in query:
             query = query.replace("jarvis", "")
             query = query.replace("open flipkart and search", "")
             webbrowser.open(f"https://www.flipkart.com/search?q={query}")
             speak("ok sir")
-        elif "open amazon and search" in query:
+    elif "open amazon and search" in query:
             query = query.replace("jarvis", "")
             query = query.replace("open amazon and search", "")
             webbrowser.open(f"https://www.amazon.in/s?k={query}")
             speak("ok sir")
-        elif "search on youtube" in query:
+    elif "search on youtube" in query:
             query = query.replace("jarvis", "")
             query = query.replace("search on youtube", "")
             webbrowser.open(f"https://www.youtube.com/results?search_query={query}")
             speak("ok sir")
-        elif "show me the direction of" in query or "show me the way of" in query or "show me the direction" in query or "show me the way" in query:
+    elif "show me the direction of" in query or "show me the way of" in query or "show me the direction" in query or "show me the way" in query:
             query = query.replace("show me the direction of","")
             query = query.replace("show me the way of","")
             query = query.replace("show me the direction","")
@@ -165,7 +153,13 @@ def taskexecution():
             pyautogui.press("enter")
             speak("here sir")
 
-        elif "where is" in query:
+    elif "show me nearby" in query:
+            query = query.replace("show me nearby","") 
+            sleep(1)   
+            webbrowser.open(f"https://www.google.com/maps/search/{query}")
+            sleep(2)
+            speak("here sir")
+    elif "where is" in query:
             query = query.replace("where is","") 
             sleep(1)   
             webbrowser.open(f"https://www.google.com/maps/place/{query}")
@@ -173,134 +167,122 @@ def taskexecution():
             speak("here sir")
         #open command
 
-        elif "open notepad" in query:
+    elif "open notepad" in query:
             speak("opening notepad sir..")
             npath = "C:\\Windows\\System32\\notepad.exe"
             os.startfile(npath)
-        elif "open chrome" in query:
+    elif "open chrome" in query:
             speak("opening chrome sir..")
             npath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
             os.startfile(npath)
-        elif "open python" in query:
+    elif "open python" in query:
             speak("opening pycharm sir..")
             npath = "C:\\Program Files\\JetBrains\\PyCharm Community Edition 2023.3.5\\bin\\pycharm64.exe"
             os.startfile(npath)
-        elif "open cmd" in query:
+    elif "open cmd" in query:
             speak("opening command prompt sir..")
             os.system("start cmd")
-        elif "open control panel" in query:
+    elif "open control panel" in query:
             speak("opening control panel sir..")
             os.system("start control panel")
-        elif "open word" in query or "open ms word"in query:
+    elif "open word" in query or "open ms word"in query:
             speak("opening sir")
             npath = "C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE"
             os.startfile(npath)
-        elif "open excel" in query:
+    elif "open excel" in query:
             speak("opening sir")
             npath = "C:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE"
             os.startfile(npath)
-        elif "open powerpoint" in query:
+    elif "open powerpoint" in query:
             speak("opening sir")
             npath = "C:\\Program Files\\Microsoft Office\\root\\Office16\\POWERPNT.EXE"
             os.startfile(npath)
-        elif "open vs code" in query:
+    elif "open vs code" in query:
             speak("opening sir")
             npath = "C:\\Users\\rihan\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"
             os.startfile(npath)
-        elif "open one note" in query:
+    elif "open one note" in query:
             speak("opening sir")
             npath = "C:\\Program Files\\Microsoft Office\\root\\Office16\\ONENOTE.EXE"
             os.startfile(npath)
-        elif "open onenote" in query:
+    elif "open onenote" in query:
             speak("opening sir")
             npath = "C:\\Program Files\\Microsoft Office\\root\\Office16\\ONENOTE.EXE"
             os.startfile(npath)
-        elif "open access" in query:
+    elif "open access" in query:
             speak("opening sir")
             npath = "C:\\Program Files\\Microsoft Office\\root\\Office16\\MSACCESS.EXE"
             os.startfile(npath)
-        elif "open quick share" in query:
+    elif "open quick share" in query:
             speak("opening sir")
             npath = "C:\\Program Files\\Google\\NearbyShare\\nearby_share.exe"
             os.startfile(npath)
 
         # close command 
 
-        elif "take break" in query:
-            speak("okay sir but i will stay here")
-            break
-        elif "take rest" in query:
-            speak("okay sir but i will stay here")
-            break
-        elif "take a break" in query:
-            speak("okay sir but i will stay here")
-            break
-        elif "take a rest" in query:
-            speak("okay sir but i will stay here")
-            break
-        elif "close notepad" in query:
+    elif "close notepad" in query:
             speak("okay closing sir")
             os.system("taskkill /f /im notepad.exe")
-        elif "close chrome" in query:
+    elif "close chrome" in query:
             speak("okay closing sir")
             os.system("taskkill /f /im chrome.exe")
-        elif "close word" in query or "close ms word"in query:
+    elif "close word" in query or "close ms word"in query:
             speak("okay closing sir")
             os.system("taskkill /f /im WINWORD.exe")
-        elif "close powerpoint" in query:
+    elif "close powerpoint" in query:
             speak("okay closing sir")
             os.system("taskkill /f /im POWERPNT.EXE")
-        elif "close excel" in query:
+    elif "close excel" in query:
             speak("okay closing sir")
             os.system("taskkill /f /im EXCEL.EXE")
-        elif "close access" in query:
+    elif "close access" in query:
             speak("okay closing sir")
             os.system("taskkill /f /im MSACCESS.EXE")
-        elif "close cmd" in query:
+    elif "close cmd" in query:
             speak("okay closing sir")
             os.system("taskkill /f /im cmd.exe")
-        elif "close song" in query or "stop song" in query or "remove song" in query:
+    elif "close song" in query or "stop song" in query or "remove song" in query:
             speak("okay closing sir")
             os.system("taskkill /f /IM Microsoft.Media.Player.exe")
-        elif "close music" in query:
+    elif "close music" in query:
             speak("okay closing sir")
             os.system("taskkill /f /IM Microsoft.Media.Player.exe")
-        elif "close code" in query:
+    elif "close vs code" in query:
             speak("okay closing sir")
             os.system("taskkill /f /IM Code.exe")
-        elif "close one note" in query:
+    elif "close one note" in query:
             speak("okay closing sir")
             os.system("taskkill /f /IM ONENOTE.EXE")
-        elif "close whatsapp" in query:
+    elif "close whatsapp" in query:
             speak("okay closing sir")
             os.system("taskkill /f /IM WhatsApp.exe")
-        elif "close quick share" in query:
+    elif "close quick share" in query:
             speak("okay closing sir")
             os.system("taskkill /f /IM nearby_share.exe")
 
 
         #basic computer command
 
-        elif "shut down my pc" in query:
+    elif "shut down my pc" in query:
             os.system("shutdown /s /t 5")
             speak("ok sir pc is shutting down")
-        elif "restart my pc" in query:
+    elif "restart my pc" in query:
             os.system("shutdown /r /t 5")
             speak("ok sir pc is restarting")
-        elif "sleep my pc" in query:
+    elif "sleep my pc" in query:
             os.system("RUNDLL32.exe powrprof.dll,SetSuspendState 0,1,0")
             speak("ok sir pc is going to sleep")
-        elif "lock my pc" in query or "lock my screen" in query:
+    elif "lock my pc" in query or "lock my screen" in query:
             speak("ok sir")
             os.system("Rundll32.exe user32.dll,LockWorkStation")
 
         #ood thanks! email and message
 
-        elif "send email" in query:
+    elif "send email" in query:
             speak("sir what should i say")
             query = takecommand().lower()
             email = 'rihankhanrs455@gmail.com'
-            password = 'qkwbndvqdhekgkms'
+            password = 'jyjqrvyrpostsrig'
             speak(" sir write email to send")
             my_i = simpledialog.askstring("Input", "your email id")
             send_to_email = my_i
@@ -312,7 +294,7 @@ def taskexecution():
             server.sendmail(email, send_to_email, message)
             server.quit()
             speak("email has been sent sir")
-        elif "send this file by email" in query or "send this file on email" in query:
+    elif "send file by email" in query:
             pyautogui.keyDown('ctrl')
             pyautogui.press('c')
             pyautogui.keyUp('ctrl')
@@ -320,9 +302,9 @@ def taskexecution():
             my_i = simpledialog.askstring("Input", "your email id")
             em = my_i
             webbrowser.open("https://mail.google.com/mail/u/0/#inbox")
-            sleep(5)
+            sleep(6)
             pyautogui.press('c')
-            sleep(4)
+            sleep(3)
             pyautogui.write(em)
             sleep(2)
             pyautogui.press('enter')
@@ -334,12 +316,12 @@ def taskexecution():
             pyautogui.keyDown('ctrl')
             pyautogui.press('v')
             pyautogui.keyUp('ctrl')
-            sleep(4)
+            sleep(6)
             pyautogui.hotkey('ctrl', 'enter')
             speak("file has been sent sir")
             speak("now closing mail")
             pyautogui.hotkey('ctrl', 'w')
-        elif "send message" in query or "send a message" in query:
+    elif "send message" in query or "send a message" in query:
             speak("who to send the message")
             hi = takecommand().lower()
             if "papa" in hi:
@@ -385,7 +367,7 @@ def taskexecution():
             elif "no" in hl:
                 speak("ok sir")
                 pass
-        elif "send this file" in query or "send a file" in query:
+    elif "send this file" in query or "send a file" in query:
             speak("ok sir please wait")
             pyautogui.keyDown('ctrl')
             pyautogui.press('c')
@@ -431,7 +413,7 @@ def taskexecution():
             elif "no" in hlo:
                 speak("ok sir")
                 pass
-        elif "send me" in query or "send mi" in query:
+    elif "send me" in query or "send mi" in query:
             speak("ok sir please wait")
             hi = "r.siddiqui"
             pyautogui.keyDown('ctrl')
@@ -454,7 +436,7 @@ def taskexecution():
 
         #commands
         
-        elif "read it" in query or "read this" in query or "read" in query.lower():
+    elif "read it" in query or "read this" in query or "read" in query.lower():
             speak("Sure boss, give me a second")
             print("Reading...")
             pyautogui.keyDown('ctrl')
@@ -464,55 +446,51 @@ def taskexecution():
             text = win32clipboard.GetClipboardData()
             win32clipboard.CloseClipboard()
             speak(text)
-        elif "turn off" in query:
+    elif "turn off" in query:
             speak("ok sir system going turn off")
             sys.exit()
-        elif "close this" in query:
+    elif "close this" in query:
             speak("ok sir")
             pyautogui.hotkey('alt', 'F4')
-        elif "copy" in query:
+    elif "copy" in query:
             pyautogui.keyDown('ctrl')
             pyautogui.press('a')
             pyautogui.keyUp('ctrl')
             pyautogui.keyDown('ctrl')
             pyautogui.press('c')
             pyautogui.keyUp('ctrl')
-        elif "paste" in query:
+    elif "paste" in query:
             pyautogui.keyDown('ctrl')
             pyautogui.press('v')
             pyautogui.keyUp('ctrl')
-        elif "jarvis"in query:
+    elif "jarvis"in query:
             speak("yes sir")
-        elif "typing" in query:
-            speak("ok sir")
-            pyautogui.hotkey('win', 'h')
-            break
-        elif "minimize" in query or "minimise" in query:
+    elif "minimize" in query or "minimise" in query:
             speak("ok sir")
             pyautogui.hotkey('win', 'd')
-        elif "maximize" in query or "maximise" in query:
+    elif "maximize" in query or "maximise" in query:
             speak("ok sir")
             pyautogui.hotkey('win', 'd')
-        elif "show me properties" in query:
+    elif "show me properties" in query:
             pyautogui.hotkey("alt","enter")
-        elif "search a image" in query or "search a image of" in query:
+    elif "search a image" in query or "search a image of" in query:
             query = query.replace("search a image", "")
             query = query.replace("search a image of", "")
             webbrowser.open(f"https://www.google.com/search?q={query}&sca_esv=999851109142aa1d&sxsrf=ADLYWIKaYd7sWPkbdSoYHke_KlEx417xzA:1720102322675&source=hp&biw=1933&bih=900&ei=sq2GZuqYJ7LAvr0P6vqhqAo&iflsig=AL9hbdgAAAAAZoa7wl-FoEvaV80pU1xrWfo1DMJQUQsS&oq=&gs_lp=EgNpbWciACoCCAAyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gJIsClQAFgAcAF4AJABAJgBAKABAKoBALgBAcgBAIoCC2d3cy13aXotaW1nmAIBoAIPqAIKmAMPkgcBMaAHAA&sclient=img&udm=2")
-        elif "search image" in query or "search image of" in query:
+    elif "search image" in query or "search image of" in query:
             query = query.replace("search image", "")
             query = query.replace("search image of", "")
             webbrowser.open(f"https://www.google.com/search?q={query}&sca_esv=999851109142aa1d&sxsrf=ADLYWIKaYd7sWPkbdSoYHke_KlEx417xzA:1720102322675&source=hp&biw=1933&bih=900&ei=sq2GZuqYJ7LAvr0P6vqhqAo&iflsig=AL9hbdgAAAAAZoa7wl-FoEvaV80pU1xrWfo1DMJQUQsS&oq=&gs_lp=EgNpbWciACoCCAAyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gIyBxAjGCcY6gJIsClQAFgAcAF4AJABAJgBAKABAKoBALgBAcgBAIoCC2d3cy13aXotaW1nmAIBoAIPqAIKmAMPkgcBMaAHAA&sclient=img&udm=2")
-        elif "change the application" in query:
+    elif "change the application" in query:
             pyautogui.hotkey("alt","tab")
-        elif "hacking" in query:
-            speak("opening your hacking machine")
+    elif "hacking" in query:
+            speak("ok sir")
             npath = "C:\\Program Files\\Oracle\\VirtualBox\\VirtualBox.exe"
             os.startfile(npath)
-        elif "close tab" in query:
+    elif "close tab" in query:
             speak("ok sir")
             pyautogui.hotkey('ctrl', 'w')
-        elif "bluetooth" in query:
+    elif "bluetooth" in query:
             speak("ok sir now check")
             sleep(1)
             pyautogui.keyDown('win')
@@ -524,7 +502,7 @@ def taskexecution():
             pyautogui.keyDown('win')
             pyautogui.press('a')
             pyautogui.keyUp('win')
-        elif "remember it" in query:
+    elif "remember it" in query:
             speak("ok sir i remember")
             pyautogui.press('win')
             pyautogui.press('tab')
@@ -537,22 +515,23 @@ def taskexecution():
             pyautogui.keyDown('ctrl')
             pyautogui.press('v')
             pyautogui.keyUp('ctrl')
-            sleep(1)
+            sleep(1.5)
             pyautogui.press('enter')
             sleep(0.5)
             pyautogui.hotkey('alt','F4')
-        elif "search" in query:
+    elif "search" in query:
             speak("ok sir")
             query = query.replace("search", "")
             pyautogui.press('/')
             pyautogui.write(query)
-            
-        else:
+    else:
             if "open" in query:
                 speak("ok sir")
                 query = query.replace("open", "")
+                p.copy(query)
                 pyautogui.hotkey('win', 's')
-                pyautogui.write(query)
+                sleep(1)
+                pyautogui.hotkey('ctrl', 'v')
                 sleep(1)
                 pyautogui.press('enter')
                 sleep(2)
@@ -604,39 +583,15 @@ def taskexecution():
                     else:
                         pass
 
-
-if __name__ == "__main__":
-    wish()
+def jarvis_assistant():
     while True:
-        permission = takecommand().lower()
-        if "jarvis" in permission:
-            taskexecution()
-        elif "wake up" in permission:
-            taskexecution()
-        elif "breakup" in permission:
-            taskexecution()
-        elif "main kab" in permission:
-            taskexecution()
-        elif "makeup" in permission:
-            taskexecution()
-        elif "turn off" in permission:
-            speak("ok sir system going turn off")
-            sys.exit()
-        elif "shut down my pc" in permission:
-            os.system("shutdown /s /t 5")
-            speak("ok sir pc is shutting down")
-            sleep(1)
-            sys.exit()
-        elif "restart my pc" in permission:
-            os.system("shutdown /r /t 5")
-            sleep(1)
-            sys.exit()
-            speak("ok sir pc is restarting")
-        elif "sleep my pc" in permission:
-            os.system("RUNDLL32.exe powrprof.dll,SetSuspendState 0,1,0")
-            speak("ok sir pc is going to sleep")
-            sleep(1)
-            sys.exit()
-        elif "lock my pc" in permission or "lock my screen" in permission:
-            speak("ok sir")
-            os.system("Rundll32.exe user32.dll,LockWorkStation")
+        query = takecommand()
+        
+        # Check if the command contains the keyword 'jarvis'
+        if "jarvis" in query:
+            # Remove 'jarvis' from the command and process the rest
+            query = query.replace("jarvis", "").strip()
+            taskexecution(query)
+if __name__ == "__main__":
+       wish()
+       jarvis_assistant()
