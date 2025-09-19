@@ -37,7 +37,7 @@ def speak(audio):
     print(audio)
     engine.runAndWait()
 
-#voice to text
+# voice to text
 def takecommand():
     """Listen for voice input and return it as text."""
     with sr.Microphone() as source:
@@ -51,6 +51,7 @@ def takecommand():
             return ""
         except sr.RequestError:
             return "Sorry, there seems to be an issue with the service."
+
 
 
 

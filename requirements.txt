@@ -1,0 +1,9 @@
+pyttsx3
+SpeechRecognition
+requests
+pyautogui
+win32clipboard
+playsound==1.2.2
+tk
+pyperclip
+groq
